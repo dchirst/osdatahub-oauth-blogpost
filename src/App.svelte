@@ -1,25 +1,59 @@
 <script>
 	export let name;
-	import { onMount } from "svelte";
-	import L from "leaflet";
+	import { onMount, onDestroy } from 'svelte'
+  import { Map } from 'maplibre-gl';
+  import 'maplibre-gl/dist/maplibre-gl.css';
 
-  // Initialise Map
   let map;
-  let marker;
+
+  let apiKey;
+  function getToken() {
+      return fetch("/api/oauthfunction")
+          .then((response) => response.json())
+                  .then(result => {
+            if(result.access_token) {
+                // Store this token
+                apiKey = result.access_token;
+
+                // Get a new token 30 seconds before this one expires
+                const timeoutMS = (result.expires_in - 30) * 1000;
+                setTimeout(getToken, timeoutMS);
+            } else {
+                // We failed to get the token
+                return Promise.reject();
+            }
+        })
+        .catch(error => {
+            return Promise.reject();
+        });
+  }
+
+
   onMount(() => {
-	fetch("/api/oauth-function").then((response) => response.json()).then((response) => alert(response))
+      getToken().then(() => {
+          var serviceUrl = "https://api.os.uk/maps/vector/v1/vts";
+          map = new Map({
+              container: 'map',
+              style: serviceUrl + '/resources/styles?',
+              center: [-1.608411, 54.968004],
+              zoom: 9,
+              maxZoom: 15,
+              transformRequest: url => {
+                  url += '&srs=3857';
+                  return {
+                      url: url,
+                      headers: {'Authorization': 'Bearer ' + apiKey}
+                  }
+              }
+          });
 
-	var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-		maxZoom: 19,
-		attribution: '© OpenStreetMap'
-	});
-	    map = L.map("map", { zoomControl: false,
-			center: [51.505, -0.09],
-    		zoom: 13,
-			layers: [osm]
-		});
-    L.control.zoom({ position: "topright" }).addTo(map);
+      })
 
+
+  });
+
+  onDestroy(() => {
+    map.remove();
   });
 </script>
 

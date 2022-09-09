@@ -18,6 +18,11 @@
     "svelte": "^3.0.0"
   },
   "dependencies": {
+    "@azure/static-web-apps-cli": "^1.0.2",
+    "azure-functions-core-tools": "^4.0.4736",
+    "leaflet": "^1.8.0",
+    "leaflet-wms-header": "^1.0.13",
+    "maplibre-gl": "^2.4.0",
     "sirv-cli": "^2.0.0"
   }
 }
