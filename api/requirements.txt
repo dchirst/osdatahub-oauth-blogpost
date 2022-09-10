@@ -4,5 +4,5 @@
 
 azure-functions
 azure-identity
-azure-keyvault-secret
+azure-keyvault-secrets
 requests-oauthlib
