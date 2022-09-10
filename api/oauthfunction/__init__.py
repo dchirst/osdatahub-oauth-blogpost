@@ -11,18 +11,21 @@ token_url = "https://api.os.uk/oauth2/token/v1"
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
     try:
+        logging.info("Running oauth function")
         identity = DefaultAzureCredential()
         logging.info('Python HTTP trigger function processed a request.')
         secretClient = SecretClient(vault_url="https://dhirst-kv.vault.azure.net/", credential=identity)
+        logging.info("Authenticated")
         project_api_key = secretClient.get_secret('project-api-key').value
 
         client_secret = secretClient.get_secret('client-secret').value
-
+        logging.info("Got api key and secret")
         client = BackendApplicationClient(client_id=project_api_key)
         oauth = OAuth2Session(client=client)
+        logging.info("Connected to oauth client")
         token = oauth.fetch_token(token_url=token_url, client_id=project_api_key,
                                   client_secret=client_secret)
-
+        logging.info('Got token')
         return json.dumps(token)
 
     except Exception as e:
