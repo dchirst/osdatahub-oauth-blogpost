@@ -447,7 +447,7 @@ into effect.
 
 Now, if we open up our static web app, we are met with the following beautiful app:
 
-![Finished map](media/finished_map.png)
+![Finished map](media/finished_map.jpg)
 
 
 
