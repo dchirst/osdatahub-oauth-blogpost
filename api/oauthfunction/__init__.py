@@ -5,8 +5,7 @@ from requests_oauthlib import OAuth2Session
 import azure.functions as func
 from azure.keyvault.secrets import SecretClient
 import json
-from azure.identity import ManagedIdentityCredential, DefaultAzureCredential
-from os import environ
+from azure.identity import DefaultAzureCredential
 
 token_url = "https://api.os.uk/oauth2/token/v1"
 
