@@ -13,10 +13,6 @@ map. We will be using Azure Static Web Apps and Svelte, since that fits into the
 Team's current stack, but hopefully this tutorial will provide a general roadmap for anyone trying 
 to make their web map more secure.
 
-Note: this blogpost will create a static app with a publicly accessible API. Although our permanent API keys will not
-be accessible, a malicious actor could just continually the public API and get a temporary token that they could use for
-5 minutes. If we wanted to remove this exploit, we'd need to make a non-static web app.
-
 
 ## Part 0 - The Plan
 
@@ -470,8 +466,10 @@ Ideally, we would hide the OAuth API request on a server where we do not need an
 frontend. Nonetheless, by using Ordnance Survey's OAuth API, we are able to secure our apps and make it harder for malicious
 actors to steal our keys.
 
-
-
+**Note**: Although our permanent API keys will not be accessible, a malicious actor could still exploit a vulnerability 
+by capturing the temporary token for use within its 5 minutes limit. The goal here is to increase security and make it 
+less appealing fot a bad actor to take advantage of our services. If we wanted to remove this exploit completely, we'd 
+need to make a non-static web app.
 
 
 
